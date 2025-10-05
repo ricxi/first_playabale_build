@@ -4,34 +4,46 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private float speed = 5f;
     [SerializeField] private SpriteRenderer sr;
-    [SerializeField] private float speed = 5f; 
+    [SerializeField] private Transform firePoint;
 
-    void Start() 
-    { 
-        rb = GetComponent<Rigidbody2D>();
+    private PlayerShooting shooting;
+
+    void Start()
+    {
         sr = GetComponent<SpriteRenderer>();
+        shooting = GetComponent<PlayerShooting>();
     }
 
-
-
-    void FixedUpdate()
+    void Update()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        Move();
+    }
+
+    void Move()
+    {
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        float verticalInput = Input.GetAxisRaw("Vertical");
+
         Vector3 movement = new Vector3(horizontalInput, verticalInput, 0);
         movement.Normalize();
         transform.Translate(movement * speed * Time.deltaTime);
 
-        FlipSprite(horizontalInput);
-    } 
+        Flip(horizontalInput);
+    }
 
-    void FlipSprite(float horizontalInput)
+    void Flip(float horizontalInput)
     {
         if (horizontalInput < 0)
+        {
             sr.flipX = true;
+            shooting.shootDirection = -1;
+        }
         else if (horizontalInput > 0)
+        {
             sr.flipX = false;
+            shooting.shootDirection = 1;
+        }
     }
-} 
+}
