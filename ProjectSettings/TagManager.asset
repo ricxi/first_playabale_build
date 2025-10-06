@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Enemy
+  - Teleport
   layers:
   - Default
   - TransparentFX
@@ -53,6 +55,6 @@ TagManager:
   - name: 4
     uniqueID: 322850737
     locked: 0
-  - name: space_ship
+  - name: player
     uniqueID: 2230366901
     locked: 0

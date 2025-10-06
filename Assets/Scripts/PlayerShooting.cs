@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour
 {
-    public GameObject bulletPrefab;
-    public Transform firePoint;
-    public float fireRate = 0.3f;
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private float fireRate = 0.3f;
 
     [HideInInspector]
     public int shootDirection = 1;
-
     private float nextFireTime = 0f;
 
     void Update()
