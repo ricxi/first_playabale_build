@@ -8,20 +8,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float sprintSpeed = 20f;
 
     [SerializeField] private Transform teleportTarget;
-    [SerializeField] private SpriteRenderer sr;
-    [SerializeField] private PolygonCollider2D pc;
-    public Vector2 originalColliderOffset;
-    public Vector2 flippedColliderOffset;
+    private bool facingRight = false;
 
     private PlayerShooting shooting;
 
     void Start()
     {
-        sr = GetComponent<SpriteRenderer>();
-        pc = GetComponent<PolygonCollider2D>();
         shooting = GetComponent<PlayerShooting>();
-        originalColliderOffset = pc.offset;
-        flippedColliderOffset = new Vector2(-originalColliderOffset.x, originalColliderOffset.y);
     }
 
     void Update()
@@ -40,8 +33,14 @@ public class PlayerController : MonoBehaviour
         movement.Normalize();
         transform.Translate(movement * currentSpeed * Time.deltaTime);
 
-
-        Flip(horizontalInput);
+        if (horizontalInput > 0 && facingRight)
+        {
+            Flip();
+        }
+        else if (horizontalInput < 0 && !facingRight)
+        {
+            Flip();
+        }
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -52,19 +51,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Flip(float horizontalInput)
+    void Flip()
     {
-        if (horizontalInput < 0)
-        {
-            sr.flipX = true;
-            pc.offset = flippedColliderOffset;
-            shooting.shootDirection = -1;
-        }
-        else if (horizontalInput > 0)
-        {
-            sr.flipX = false;
-            pc.offset = originalColliderOffset;
-            shooting.shootDirection = 1;
-        }
+        facingRight = !facingRight;
+        Vector2 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
     }
 }
